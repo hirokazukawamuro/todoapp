@@ -1,63 +1,44 @@
 <script>
 export default {
-  data(){
+  data() {
     return {
-      title: "My New Vue Title",
-      message:"Welcome to Vue",
-      isBlue: true,
       input:{
-        firstName: '',
-        lastName:'',
-        isMember: true,
+        text:'',
+        checked: true,
       },
-      users: [
-        {
-          firstName: 'kawamuro',
-          lastName: 'hirokazu',
-          isMember: false,
-        },
-        {
-          firstName: 'roronoa',
-          lastName: 'zoro',
-          isMember: true,
-        },
-        {
-          firstName: 'niko',
-          lastName: 'robin',
-          isMember: true,
-        },
-      ],
+      todos:[],
     }
   },
   methods: {
-    addUser() {
-      this.users.push(this.input)
+    addList() {
+      this.todos.push(this.input)
       this.input = {
-        firstName: '',
-        lastName: '',
-        isMember: true,
-      }   
-    },
+        text:'',
+        checked: true,
+      }
+    }
   },
 }
+
 </script>
 
 <template>
-  <h1 :title="message" :class="{ blue: isBlue }">{{ title }}</h1>
-  <input type="text" v-model="input.firstName"/>
-  <input type="text" v-model="input.lastName"/>
-  <input type="checkbox" v-model="input.isMember"/>
-  <button @click="addUser">ユーザー追加</button>
-  <h2>ユーザーのデータ</h2>
-  <div v-for="user in users">
-    <p>Name: {{ user.firstName + ' ' + user.lastName }}</p>
-    <p v-if="user.isMember"> メンバーです</p>
-    <p v-else>メンバーではありません</p>
-  </div>
+  <h1>My ToDo App</h1>
+  <input type="text" v-model="input.text"/>
+  <button @click="addList">追加</button><button>完了済みを削除する</button>
+  <p v-if="todos.length === 0">ToDoがまだありません！</p>
+  <ul v-else>
+    <li v-for="todo in todos">
+    <p>{{ todo.text }}<input type="checkbox"></p></li>
+  </ul>
 </template>
 
 <style>
-.blue {
-  color: blue;
+body {
+  background-color: #eee;
+}
+
+.todo-done {
+  text-decoration: line-through;
 }
 </style>
