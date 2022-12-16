@@ -4,19 +4,29 @@ export default {
     return {
       input:{
         text:'',
-        checked: true,
+        isDone: false,
       },
       todos:[],
     }
   },
   methods: {
     addList() {
-      this.todos.push(this.input)
-      this.input = {
-        text:'',
-        checked: true,
+      if(this.input.text === ''){
+        alert('文字を入力してください')
+        return
       }
-    }
+      else{
+        this.todos.push(this.input)
+        this.input = {
+          text:'',
+          isDone: false,
+        }
+      } 
+    },
+
+    clearDoneTodos(){
+      this.todos = this.todos.filter((todo) => !todo.isDone)
+    },
   },
 }
 
@@ -25,11 +35,11 @@ export default {
 <template>
   <h1>My ToDo App</h1>
   <input type="text" v-model="input.text"/>
-  <button @click="addList">追加</button><button>完了済みを削除する</button>
+  <button @click="addList">追加</button><button @click="clearDoneTodos">完了済みを削除する</button>
   <p v-if="todos.length === 0">ToDoがまだありません！</p>
   <ul v-else>
     <li v-for="todo in todos">
-    <p>{{ todo.text }}<input type="checkbox"></p></li>
+    <input type="checkbox" v-model="todo.isDone"/><span :class="{ 'todo-done' : todo.isDone}">{{ todo.text }}</span></li>
   </ul>
 </template>
 
@@ -40,5 +50,13 @@ body {
 
 .todo-done {
   text-decoration: line-through;
+}
+
+ul{
+  list-style: none;
+}
+
+li{
+  text-align: left;
 }
 </style>
